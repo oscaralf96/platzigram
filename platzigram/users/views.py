@@ -10,6 +10,9 @@ from django.shortcuts import render, redirect
 # Utilities
 from datetime import datetime
 
+# Forms
+from .forms import ProfileForm
+
 from .models import Profile
 
 
@@ -57,8 +60,34 @@ def signup(request):
 
 
 def update_profile(request):
+    """Update a user's profile view."""
+    profile = request.user.profile
 
-    return render(request, 'users/update_profile.html')
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+
+            profile.website = data['website']
+            profile.phone_number = data['phone_number']
+            profile.biography = data['biography']
+            profile.picture = data['picture']
+            profile.save()
+
+            return redirect('update_profile')
+
+    else:
+        form = ProfileForm()
+
+    return render(
+        request=request,
+        template_name='users/update_profile.html',
+        context={
+            'profile': profile,
+            'user': request.user,
+            'form': form
+        }
+    )
 
 
 @login_required
