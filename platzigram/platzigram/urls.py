@@ -25,7 +25,8 @@ urlpatterns = [
     path('hello-world', views.hello_world, name='hello_world'),
     path('sorted', views.sorted, name='sort'),
     path('hi/<str:name>/<int:age>/', views.say_hi, name='hi'),
-    path('posts/', include('posts.urls')),
-    path('users/', include('users.urls')),
+
+    path('posts/', include(('posts.urls', 'posts'), namespace='posts')),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,7 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.list_posts, name='posts'),
-    path('new/', views.create_post, name='create_post'),
+    path(
+        route='',
+        view=views.PostsFeedView.as_view(),
+        name='posts'
+     ),
+    path(
+        route='new/',
+        view=views.CreatePostView.as_view(),
+        name='create_post'),
 
 ]
